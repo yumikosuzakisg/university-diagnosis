@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大学タイプ診断</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      background: linear-gradient(135deg, #fff7fb, #eef7ff);
+      color: #333;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 24px 18px 60px;
+    }
+
+    .hero, .category, #result {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 28px 18px;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #4b4b8f;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #666;
+    }
+
+    .category {
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+
+    .category h2 {
+      font-size: 20px;
+      color: #4b4b8f;
+    }
+
+    label {
+      display: block;
+      background: #fafafa;
+      padding: 12px 14px;
+      margin: 8px 0;
+      border-radius: 12px;
+      font-size: 15px;
+      line-height: 1.6;
+      cursor: pointer;
+      border: 1px solid #eee;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 8px;
+      transform: scale(1.1);
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 999px;
+      background: #7c79ff;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 18px;
+      box-shadow: 0 8px 18px rgba(124,121,255,0.3);
+    }
+
+    #result {
+      display: none;
+      padding: 24px;
+      margin-top: 28px;
+      text-align: center;
+    }
+
+    .result-title {
+      font-size: 24px;
+      color: #4b4b8f;
+      margin-bottom: 16px;
+      font-weight: bold;
+    }
+
+    .main-result {
+      background: #f3f1ff;
+      color: #4b4b8f;
+      padding: 16px;
+      border-radius: 18px;
+      font-weight: bold;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    .ranking {
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .ranking-item {
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin: 8px 0;
+      font-size: 15px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .result-text {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.8;
+      margin-top: 18px;
+      text-align: left;
+    }
+
+    .screenshot-note {
+      margin-top: 24px;
+      padding: 16px;
+      background: #fff8e8;
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #666;
+      text-align: center;
+    }
+
+    .note {
+      font-size: 13px;
+      color: #777;
+      text-align: center;
+      margin-top: 16px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 24px; }
+      .category h2 { font-size: 18px; }
+      label { font-size: 14px; }
+      .main-result { font-size: 18px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>大学タイプ診断</h1>
+      <p class="subtitle">
+        当てはまる項目にチェックを入れてください。<br>
+        あなたに近い大学タイプをランキング形式で表示します。
+      </p>
+    </section>
+
+    <form id="quizForm">
+      <div class="category">
+        <h2>キャリア直結型</h2>
+        <label><input type="checkbox" data-type="career">大学生活では、将来に役立つ経験を積みたいと思う</label>
+        <label><input type="checkbox" data-type="career">インターンや企業プロジェクトに興味がある</label>
+        <label><input type="checkbox" data-type="career">学ぶなら、実生活や仕事に活かせる内容がいい</label>
+        <label><input type="checkbox" data-type="career">「楽しそう」より「将来に役立ちそう」を優先したい</label>
+        <label><input type="checkbox" data-type="career">周りに目標が高い人が多い環境に刺激を感じる</label>
+        <label><input type="checkbox" data-type="career">大学選びでは、卒業後のキャリアにつながるカリキュラムがあるか気になる</label>
+      </div>
+
+      <div class="category">
+        <h2>学問探求型</h2>
+        <label><input type="checkbox" data-type="academic">気になることがあると、つい自分で調べたくなる</label>
+        <label><input type="checkbox" data-type="academic">答えを覚えるより、「どうしてそうなるのか」を理解したい</label>
+        <label><input type="checkbox" data-type="academic">知識を学ぶこと自体に楽しさを感じる</label>
+        <label><input type="checkbox" data-type="academic">「将来役に立つか」より、「学んでいて楽しいか」を大切にしたい</label>
+        <label><input type="checkbox" data-type="academic">大学で深く学んでみたい分野・学問がある</label>
+        <label><input type="checkbox" data-type="academic">大学では、勉強や研究にしっかり取り組みたい</label>
+      </div>
+
+      <div class="category">
+        <h2>バランス型</h2>
+        <label><input type="checkbox" data-type="balance">今はまだ、興味のあることが一つに絞れない</label>
+        <label><input type="checkbox" data-type="balance">大学ではいろいろなことを試してみたい</label>
+        <label><input type="checkbox" data-type="balance">学部や分野を越えて学べる環境に惹かれる</label>
+        <label><input type="checkbox" data-type="balance">「これ！」と一つに決めるより、まずは色々経験してから専攻を決めたい</label>
+        <label><input type="checkbox" data-type="balance">英語で学ぶことに興味がある</label>
+        <label><input type="checkbox" data-type="balance">勉強・課外活動・キャリアをバランスよく楽しみたい</label>
+      </div>
+
+      <div class="category">
+        <h2>コミュニティ重視型</h2>
+        <label><input type="checkbox" data-type="community">大学では人とのつながりを大切にしたい</label>
+        <label><input type="checkbox" data-type="community">大学の雰囲気はかなり重要だと思う</label>
+        <label><input type="checkbox" data-type="community">自分と気の合う人がいる環境だと安心する</label>
+        <label><input type="checkbox" data-type="community">少人数で仲が深いコミュニティに魅力を感じる</label>
+        <label><input type="checkbox" data-type="community">サークルやイベントには積極的に参加したい</label>
+        <label><input type="checkbox" data-type="community">人との会話やコミュニティに所属することに楽しさを感じる</label>
+      </div>
+
+      <div class="category">
+        <h2>グローバル挑戦型</h2>
+        <label><input type="checkbox" data-type="global">海外留学や海外就職に少しでも興味がある</label>
+        <label><input type="checkbox" data-type="global">多様なバックグラウンドの人と関わってみたい</label>
+        <label><input type="checkbox" data-type="global">新しい環境に飛び込むことにワクワクする</label>
+        <label><input type="checkbox" data-type="global">英語を使う環境にも挑戦してみたい</label>
+        <label><input type="checkbox" data-type="global">新しい価値観や考え方に触れたい</label>
+        <label><input type="checkbox" data-type="global">国内外問わず、国際的な環境で成長したい</label>
+      </div>
+
+      <button type="button" id="resultButton">診断結果を見る</button>
+    </form>
+
+    <div id="result"></div>
+
+    <p class="note">
+      ※この診断は、大学選びの価値観を考えるための簡易診断です。<br>
+      複数タイプに当てはまる場合もあります。
+    </p>
+  </div>
+
+  <script>
+    const typeNames = {
+      career: "キャリア直結型",
+      academic: "学問探求型",
+      balance: "バランス型",
+      community: "コミュニティ重視型",
+      global: "グローバル挑戦型"
+    };
+
+    const typeDescriptions = {
+      career: "将来のキャリアや実践的な経験を重視するタイプです。インターン、企業連携、実社会に近い学びがある大学と相性が良さそうです。",
+      academic: "学ぶこと自体に楽しさを感じるタイプです。研究、専門性、少人数授業、深く考える学びがある大学と相性が良さそうです。",
+      balance: "まだ一つに絞らず、幅広く試したいタイプです。学部横断の学びや柔軟なカリキュラムがある大学と相性が良さそうです。",
+      community: "人とのつながりや大学の雰囲気を大切にするタイプです。少人数コミュニティ、寮生活、サークル文化がある大学と相性が良さそうです。",
+      global: "新しい環境や国際的な学びに挑戦したいタイプです。留学制度、多国籍な環境、英語で学べる大学と相性が良さそうです。"
+    };
+
+    function showResult() {
+      const counts = {
+        career: 0,
+        academic: 0,
+        balance: 0,
+        community: 0,
+        global: 0
+      };
+
+      const checkedBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
+
+      checkedBoxes.forEach(function(box) {
+        const type = box.getAttribute("data-type");
+        counts[type]++;
+      });
+
+      const ranking = Object.entries(counts).sort(function(a, b) {
+        return b[1] - a[1];
+      });
+
+      const topType = ranking[0][0];
+
+      let html = `
+        <div class="result-title">あなたの大学タイプ</div>
+        <div class="main-result">${typeNames[topType]}</div>
+        <p class="result-text">${typeDescriptions[topType]}</p>
+
+        <div class="ranking">
+          <h3>タイプランキング</h3>
+      `;
+
+      ranking.forEach(function(item, index) {
+        html += `
+          <div class="ranking-item">
+            <span>${index + 1}位：${typeNames[item[0]]}</span>
+            <strong>${item[1]}点</strong>
+          </div>
+        `;
+      });
+
+      html += `
+        </div>
+
+        <div class="screenshot-note">
+          診断結果は端末上でのみ表示され、保存されません。<br>
+          イベント内で使用しますので、結果画面のスクリーンショットを撮影しておいてください。<br><br>
+          診断結果はあくまで参考です。気になるイベントがあれば、診断タイプに関わらずぜひご参加ください！
+        </div>
+      `;
+
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = html;
+      resultDiv.style.display = "block";
+      resultDiv.scrollIntoView({ behavior: "smooth" });
+    }
+
+    document.getElementById("resultButton").addEventListener("click", showResult);
+  </script>
+</body>
+</html>
