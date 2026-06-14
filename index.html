@@ -31,6 +31,20 @@
       margin-bottom: 24px;
     }
 
+    .event-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #7c79ff;
+     letter-spacing: 1px;
+     margin-bottom: 10px;
+    }
+
+    .catch-copy {
+      color: #666;
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
     h1 {
       font-size: 28px;
       color: #4b4b8f;
@@ -83,6 +97,10 @@
       box-shadow: 0 8px 18px rgba(124,121,255,0.3);
     }
 
+    button:hover {
+      background: #6865e8;
+    }
+
     #result {
       display: none;
       padding: 24px;
@@ -105,6 +123,7 @@
       font-weight: bold;
       font-size: 20px;
       margin-bottom: 16px;
+      line-height: 1.7;
     }
 
     .ranking {
@@ -160,15 +179,24 @@
   </style>
 </head>
 
-<body>
-  <div class="container">
-    <section class="hero">
-      <h1>大学タイプ診断</h1>
-      <p class="subtitle">
-        当てはまる項目にチェックを入れてください。<br>
-        あなたに近い大学タイプをランキング形式で表示します。
-      </p>
-    </section>
+<section class="hero">
+
+  <div class="event-title">
+    EDUBAL 夏休み特別イベント
+  </div>
+
+  <div class="catch-copy">
+    あなたに合う大学を見つけよう！
+  </div>
+
+  <h1>大学タイプ診断</h1>
+
+  <p class="subtitle">
+    当てはまる項目にチェックを入れてください。<br>
+    あなたに近い大学タイプをランキング形式で表示します。
+  </p>
+
+</section>
 
     <form id="quizForm">
       <div class="category">
@@ -269,13 +297,31 @@
         return b[1] - a[1];
       });
 
-      const topType = ranking[0][0];
+      const highestScore = ranking[0][1];
+
+      const topTypes = ranking.filter(function(item) {
+        return item[1] === highestScore;
+      });
 
       let html = `
         <div class="result-title">あなたの大学タイプ</div>
-        <div class="main-result">${typeNames[topType]}</div>
-        <p class="result-text">${typeDescriptions[topType]}</p>
 
+        <div class="main-result">
+          ${topTypes.map(function(item) {
+            return typeNames[item[0]];
+          }).join("<br>")}
+        </div>
+      `;
+
+      topTypes.forEach(function(item) {
+        html += `
+          <p class="result-text">
+            ${typeDescriptions[item[0]]}
+          </p>
+        `;
+      });
+
+      html += `
         <div class="ranking">
           <h3>タイプランキング</h3>
       `;
